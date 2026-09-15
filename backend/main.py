@@ -12,6 +12,7 @@ app = FastAPI()
 @app.get("/channel")
 def get_channel_videos():
     url = "https://www.googleapis.com/youtube/v3/search"
+    video_url = "https://www.googleapis.com/youtube/v3/videos"
 
     params = {
         "part": "snippet",
@@ -26,6 +27,12 @@ def get_channel_videos():
     data = response.json()
 
     videos = []
+    ids = []
+
+    for item in data["items"]:
+        ids.append(item["id"]["videoId"])
+
+    ids = ",".join(ids)
 
     for item in data["items"]:
         video = {
@@ -34,5 +41,16 @@ def get_channel_videos():
             "published_at": item["snippet"]["publishedAt"]
         }
         videos.append(video)
+
+    video_params = {
+            "part": "statistics",
+            "id": ids,
+            "key": API_KEY
+        }
+
+    vid_response = requests.get(video_url, params = video_params)
+    dataID = vid_response.json()
+
+    print(dataID["items"][0]["statistics"]["viewCount"])
 
     return videos
