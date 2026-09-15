@@ -18,9 +18,10 @@ def get_channel_videos():
         "part": "snippet",
         "channelId": "UCNAf1k0yIjyGu3k9BwAg3lg",
         "type": "video",
-        "maxResults": 10,
-        "key": API_KEY
-    }
+        "maxResults": 50,
+        "key": API_KEY,
+        "publishedAfter": "2025-08-15T00:00:00Z",
+        }
 
     response = requests.get(url, params = params)
 
@@ -54,7 +55,13 @@ def get_channel_videos():
     for video in videos:
         for item in dataID["items"]:
             if video["id"] == item["id"]:
-                print(video["id"])
+                #print(video["id"])
                 video["viewCount"] = item["statistics"]["viewCount"]
+
+    for item in data["items"]:
+        date = item["snippet"]["publishedAt"]
+
+        if date <= "2026-09-24T23:59:59Z":
+            print(item["snippet"]["title"])
 
     return videos
