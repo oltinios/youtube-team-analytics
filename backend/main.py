@@ -21,4 +21,6 @@ def get_video():
 
     response = requests.get(url, params = params)
 
-    return response.json()
+    data = response.json()
+
+    return data["items"][0]["snippet"]["title"]
