@@ -51,6 +51,10 @@ def get_channel_videos():
     vid_response = requests.get(video_url, params = video_params)
     dataID = vid_response.json()
 
-    print(dataID["items"][0]["statistics"]["viewCount"])
+    for video in videos:
+        for item in dataID["items"]:
+            if video["id"] == item["id"]:
+                print(video["id"])
+                video["viewCount"] = item["statistics"]["viewCount"]
 
     return videos
