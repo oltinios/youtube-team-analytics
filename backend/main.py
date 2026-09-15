@@ -14,7 +14,7 @@ def get_video():
     url = "https://www.googleapis.com/youtube/v3/videos"
 
     params = {
-        "part": "snippet",
+        "part": "snippet, statistics",
         "id": "63iIZppXB_4",
         "key": API_KEY
     }
@@ -23,4 +23,13 @@ def get_video():
 
     data = response.json()
 
-    return data["items"][0]["snippet"]["title"]
+    video = data["items"][0]
+    snippet = video["snippet"]
+    statistics = video["statistics"]
+
+    return {
+        "title": snippet["title"],
+        "channel": snippet["channelTitle"],
+        "published_at": snippet["publishedAt"],
+        "views": statistics["viewCount"]
+    }
