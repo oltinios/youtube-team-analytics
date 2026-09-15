@@ -1,22 +1,24 @@
+import os
+import requests
+from dotenv import load_dotenv
 from fastapi import FastAPI
+
+load_dotenv()
+
+API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"message": "YouTube Team Analytics API"}
+@app.get("/video")
+def get_video():
+    url = "https://www.googleapis.com/youtube/v3/videos"
 
-@app.get("/videos")
-def get_videos():
-    return [
-        {
-            "title": "test1",
-            "team": "team1",
-            "views": 500000
-        },
-        {
-            "title": "test2",
-            "team": "team2",
-            "views": 750000
-        }
-    ]
+    params = {
+        "part": "snippet",
+        "id": "63iIZppXB_4",
+        "key": API_KEY
+    }
+
+    response = requests.get(url, params = params)
+
+    return response.json()
