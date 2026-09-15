@@ -25,9 +25,14 @@ def get_channel_videos():
 
     data = response.json()
 
-    titles = []
+    videos = []
 
     for item in data["items"]:
-        titles.append(item["snippet"]["title"])
+        video = {
+            "id": item["id"]["videoId"],
+            "title": item["snippet"]["title"],
+            "published_at": item["snippet"]["publishedAt"]
+        }
+        videos.append(video)
 
-    return titles
+    return videos
